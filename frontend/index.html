@@ -1,0 +1,23 @@
+
+<!doctype html><html><head><meta charset="utf-8"/><title>Cartera</title>
+<script src="https://unpkg.com/react@18/umd/react.development.js"></script>
+<script src="https://unpkg.com/react-dom@18/umd/react-dom.development.js"></script>
+<script src="https://unpkg.com/babel-standalone@6/babel.min.js"></script>
+</head><body><div id="root"></div>
+<script type="text/babel">
+const {useState,useEffect}=React;
+function App(){
+  const[a,setA]=useState([]); const[s,setS]=useState({});
+  async function load(){
+    setA(await (await fetch("/api/assets")).json());
+    setS(await (await fetch("/api/summary")).json());
+  }
+  useEffect(()=>{load()},[]);
+  return <div>
+    <h2>Cartera</h2>
+    <pre>{JSON.stringify(s,null,2)}</pre>
+    <ul>{a.map(x=><li key={x.id}>{x.name} - {x.quantity}</li>)}</ul>
+  </div>;
+}
+ReactDOM.createRoot(document.getElementById("root")).render(<App/>);
+</script></body></html>
